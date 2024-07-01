@@ -47,7 +47,7 @@ public class MenuCliente {
                     break;
 
                 case 3:
-                    cliente.validarCompra(carrito)
+                    cliente.validarCompra(carrito)  
                     break;
 
                 case 4:
