@@ -16,6 +16,8 @@ public class SistemaLogistica {
     public void registrarEmpleado(Empleado empleado) {listaEmpleados.add(empleado);}
 
     public void registrarPedido(Pedido pedido) {listaPedido.add(pedido);}
+    public List<Pedido> getListaPedido() {return listaPedido;}
+
     public Pedido obtenerPedidoPorCodigo(int codigo){
         for (Pedido pedido : listaPedidos){
             if (pedido.getCodigo() == codigo){
