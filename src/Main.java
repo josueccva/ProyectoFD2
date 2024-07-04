@@ -30,7 +30,7 @@ public class Main {
         // System.out.println("listado products main");
         // sistemaLogistica.listarTodosProductos();
 
-        Cliente cliente1 = new Cliente("Juan", "Perez", "Calle Falsa 123", "correo", "987654321");
+        Cliente cliente1 = new Cliente("Juan", "Perez", "Calle Falsa 123", "juanperez@example.com", "987654321");
         sistemaLogistica.registrarCliente(cliente1);
 
         Empleado empleado1 = new Empleado(1, "Maria Gomez", "Gerente de Ventas");
