@@ -33,7 +33,7 @@ public abstract class Producto {
 
     public int obtenerSiguienteCodigo(){
         int nextCodigo = getCodigo() + 1;
-        System.out.println("cod actual: " + nextCodigo);
+        System.out.println("codigo asignado: " + nextCodigo);
         return nextCodigo;
     }
 
