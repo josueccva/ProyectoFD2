@@ -1,6 +1,7 @@
 // Archivo: src/Cliente.java
-import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Cliente {
     private String nombre;
@@ -32,29 +33,29 @@ public class Cliente {
     public void consultarStock(SistemaLogistica sistemaLogistica) {
         System.out.println("Stock de productos disponibles:");
         for (Producto producto : sistemaLogistica.consultarStock()) {
-            System.out.println(producto.getCodigo() + " - " + producto.getNombre() + " - Stock: " + producto.getStock());
+            System.out.println(producto.getNombre() + " - Stock: " + producto.getStock());
         }
     }
 
     public void elegirProductos(SistemaLogistica sistemaLogistica, Carrito carrito) {
         Scanner scanner = new Scanner(System.in);
-        int codigoProducto;
-        int cantidad;
-
+        int codigoProducto, cantidad;
         System.out.print("Ingrese el código del producto que desea agregar al carrito: ");
         codigoProducto = scanner.nextInt();
         Producto productoElegido = sistemaLogistica.obtenerProductoPorCodigo(codigoProducto);
+
         if (productoElegido != null && productoElegido.getStock() > 0) {
             System.out.print("Ingrese la cantidad que desea agregar al carrito: ");
             cantidad = scanner.nextInt();
-            if (cantidad <= productoElegido.getStock()) {
-                productoElegido.reducirStock(cantidad);
+
+            if (cantidad > 0 && cantidad <= productoElegido.getStock()) {
                 for (int i = 0; i < cantidad; i++) {
                     carrito.agregarCarrito(productoElegido);
                 }
-                System.out.println("Producto agregado al carrito: " + productoElegido.getNombre() + " - Cantidad: " + cantidad);
+                productoElegido.reducirStock(cantidad);
+                System.out.println("Producto(s) agregado(s) al carrito: " + productoElegido.getNombre() + " - Cantidad: " + cantidad);
             } else {
-                System.out.println("Cantidad no disponible en stock.");
+                System.out.println("Cantidad no válida o fuera de stock.");
             }
         } else {
             System.out.println("Producto no disponible o sin stock.");
@@ -62,6 +63,11 @@ public class Cliente {
     }
 
     public void validarCompra(SistemaLogistica sistemaLogistica, Carrito carrito) {
+        if (carrito.getProductos().isEmpty()) {
+            System.out.println("No hay productos en el carrito, por favor elige alguno.");
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Productos en el carrito:");
         for (Producto producto : carrito.getProductos()) {
@@ -73,8 +79,9 @@ public class Cliente {
         if (respuesta.equalsIgnoreCase("s")) {
             Pedido pedido = new Pedido(sistemaLogistica.generarCodigoPedido(), this, carrito.getProductos(), "Pendiente", "Normal");
             sistemaLogistica.registrarPedido(pedido);
-            carrito.vaciarCarrito();
             System.out.println("Compra realizada con éxito. Su código de pedido es: " + pedido.getCodigo());
+            pedido.generarReportePedido();
+            carrito.vaciarCarrito();// Generar y mostrar el reporte del pedido con descuentos aplicados
         } else {
             System.out.println("Compra cancelada.");
         }
@@ -87,6 +94,7 @@ public class Cliente {
         Pedido pedido = sistemaLogistica.obtenerPedidoPorCodigo(codigoPedido);
         if (pedido != null) {
             System.out.println("Estado del pedido: " + pedido.getEstado());
+            System.out.println("Tipo de entrega: " + pedido.getTipoEntrega());
         } else {
             System.out.println("Pedido no encontrado.");
         }

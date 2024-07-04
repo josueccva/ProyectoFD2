@@ -39,7 +39,7 @@ public class MenuCliente {
         }
 
         int opcionMenu;
-        Carrito carrito = new Carrito("");
+        Carrito carrito = new Carrito();
 
         do {
             System.out.println("===================================");
@@ -55,7 +55,6 @@ public class MenuCliente {
             System.out.println("===================================");
             System.out.print("Seleccione una opción: ");
             opcionMenu = scanner.nextInt();
-            scanner.nextLine();
 
             switch (opcionMenu) {
                 case 1:
@@ -65,7 +64,11 @@ public class MenuCliente {
                     cliente.elegirProductos(sistemaLogistica, carrito);
                     break;
                 case 3:
-                    cliente.validarCompra(sistemaLogistica, carrito);
+                    if (carrito.getProductos().isEmpty()) {
+                        System.out.println("No hay productos en el carrito, por favor elige alguno.");
+                    } else {
+                        cliente.validarCompra(sistemaLogistica, carrito);
+                    }
                     break;
                 case 4:
                     consultarEstadoPedido();
@@ -137,7 +140,7 @@ public class MenuCliente {
         }
 
         for (Pedido pedido : pedidosCliente) {
-            System.out.println("Pedido " + pedido.getCodigo() + " - Estado: " + pedido.getEstado());
+            System.out.println("Pedido " + pedido.getCodigo() + " - Estado: " + pedido.getEstado() + " - Tipo de Entrega: " + pedido.getTipoEntrega());
         }
     }
 }
