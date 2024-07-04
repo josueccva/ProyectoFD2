@@ -143,25 +143,31 @@ public class MenuCliente {
     }
 
     private void nuevoCliente() {
-        System.out.println("===================================");
-        System.out.println("|        Registro de Cliente      |");
-        System.out.println("===================================");
-        System.out.print("Nombre: ");
-        String nombre = scanner.next();
-        System.out.print("Apellido: ");
-        String apellido = scanner.next();
-        scanner.nextLine();  // Consumir el salto de línea
-        System.out.print("Dirección: ");
-        String direccion = scanner.nextLine();
-        System.out.print("Correo: ");
-        String correo = scanner.nextLine();
-        System.out.print("Teléfono: ");
-        String telefono = scanner.nextLine();
+        try {
+            System.out.println("===================================");
+            System.out.println("|        Registro de Cliente      |");
+            System.out.println("===================================");
+            System.out.println("📑 Ingrese sus datos:");
+            System.out.print("Nombre: ");
+            String nombre = scanner.next();
+            System.out.print("Apellido: ");
+            String apellido = scanner.next();
+            scanner.nextLine();  // Consumir el salto de línea
+            System.out.print("Dirección: ");
+            String direccion = scanner.nextLine();
+            System.out.print("Correo: ");
+            String correo = scanner.nextLine();
+            System.out.print("Teléfono: ");
+            String telefono = scanner.nextLine();
 
-        cliente = new Cliente(nombre, apellido, direccion, correo, telefono);
-        sistemaLogistica.registrarCliente(cliente);
+            cliente = new Cliente(nombre, apellido, direccion, correo, telefono);
+            sistemaLogistica.registrarCliente(cliente);
 
-        System.out.println("Registro exitoso. Bienvenido, " + cliente.getNombre() + " " + cliente.getApellido());
+            System.out.println("✔ Registro exitoso. Bienvenido, " + cliente.getNombre() + " " + cliente.getApellido());
+        }catch (Exception e){
+            System.out.println("⚠ Ocurrio un error en el registro.");
+        }
+
     }
 
     private void consultarEstadoPedido() {
