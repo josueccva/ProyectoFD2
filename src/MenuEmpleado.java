@@ -1,4 +1,5 @@
 // Archivo: src/MenuEmpleado.java
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MenuEmpleado {
@@ -13,15 +14,7 @@ public class MenuEmpleado {
 
     public void mostrarMenu() {
         int opcion;
-
-        System.out.println("===================================");
-        System.out.println("|       Acceso de Empleado        |");
-        System.out.println("===================================");
-        System.out.println("| 1. Empleado registrado          |");
-        System.out.println("| 2. Nuevo empleado               |");
-        System.out.println("===================================");
-        System.out.print("Seleccione una opción: ");
-        opcion = scanner.nextInt();
+        opcion = opcionAccesoSeleccionado();
 
         switch (opcion) {
             case 1:
@@ -40,35 +33,29 @@ public class MenuEmpleado {
         int opcionMenu;
 
         do {
-            System.out.println("===================================");
-            System.out.println("|           Menú Empleado         |");
-            System.out.println("===================================");
-            System.out.println("| 1. Consultar stock de productos |");
-            System.out.println("| 2. Ingresar productos a stock   |");
-            System.out.println("| 3. Retirar productos de stock   |");
-            System.out.println("| 4. Consultar pedidos            |");
-            System.out.println("| 5. Regresar al menú principal   |");
-            System.out.println("===================================");
-            System.out.print("Seleccione una opción: ");
-            opcionMenu = scanner.nextInt();
-
+            opcionMenu = opcionMenuEmpSeleccionado();
             switch (opcionMenu) {
                 case 1:
                     empleado.consultarStock(sistemaLogistica);
                     break;
                 case 2:
-                    System.out.print("Ingrese el código del producto: ");
-                    int codigoProducto = scanner.nextInt();
-                    System.out.print("Ingrese la cantidad a añadir: ");
-                    int cantidadAñadir = scanner.nextInt();
+                    // agregarStockProducto
+                    // System.out.print("Ingrese el código del producto: ");
+                    // int codigoProducto = scanner.nextInt();
+                    int codigoProducto = soloNumero("📑 Ingrese el código del producto: ", "❌ El código debe ser un entero ❌");
+                    // System.out.print("Ingrese la cantidad a añadir: ");
+                    int cantidadAñadir = soloNumero("📑 Ingrese la cantidad a añadir: ","❌ La cantidad ha añadir debe ser un entero ❌");
+                    System.out.println("-----------------------------------------------");
                     empleado.añadirStock(sistemaLogistica, codigoProducto, cantidadAñadir);
+                    System.out.println("-----------------------------------------------");
                     break;
                 case 3:
-                    System.out.print("Ingrese el código del producto: ");
-                    int codigoProductoRetirar = scanner.nextInt();
-                    System.out.print("Ingrese la cantidad a retirar: ");
-                    int cantidadRetirar = scanner.nextInt();
+
+                    int codigoProductoRetirar = soloNumero("📑 Ingrese el código del producto: ", "❌ El código debe ser un entero ❌");
+                    int cantidadRetirar = soloNumero("📑 Ingrese la cantidad a retirar: ","❌ La cantidad ha retirar debe ser un entero ❌");
+                    System.out.println("---------------------------------------------------");
                     empleado.reducirStock(sistemaLogistica, codigoProductoRetirar, cantidadRetirar);
+                    System.out.println("---------------------------------------------------");
                     break;
                 case 4:
                     empleado.consultarPedidos(sistemaLogistica);
@@ -88,36 +75,112 @@ public class MenuEmpleado {
         } while (opcionMenu != 5);
     }
 
+    public int soloNumero(String mensaje, String errMensaje){
+        System.out.print(mensaje);
+        int opcion;
+        try{
+            opcion = scanner.nextInt();
+        }catch (InputMismatchException e){
+            System.out.println(errMensaje);
+            scanner.next();
+            opcion = soloNumero(mensaje, errMensaje);
+        }
+        return opcion;
+    }
+
+    // recursivo
     private boolean empleadoRegistrado() {
         scanner.nextLine();
-        System.out.print("Ingrese su ID registrado: ");
-        int id = scanner.nextInt();
-        empleado = sistemaLogistica.buscarEmpleadoPorId(id);
+        System.out.print("📑 Ingrese su ID registrado: ");
+        boolean retorno;
 
-        if (empleado == null) {
-            System.out.println("Empleado no encontrado. Regresando al menú principal...");
-            return false;
+        try{
+            int id = scanner.nextInt();
+            empleado = sistemaLogistica.buscarEmpleadoPorId(id);
+
+            if (empleado == null) {
+                System.out.println("🙅‍♂️ Empleado no encontrado. Regresando al menú principal... 🙅‍♀️");
+                return false;
+            }
+            System.out.println("🏋️‍♀️ Bienvenido de nuevo, " + empleado.getNombre() + " 🏋️‍♂️ (ID: " + empleado.getId() + ") 💪");
+            retorno = true;
+        }catch (InputMismatchException e){
+            System.out.println("❌ El ID debe ser un número entero. ❌");
+            scanner.next();
+            retorno = empleadoRegistrado();
         }
-
-        System.out.println("Bienvenido de nuevo, " + empleado.getNombre() + " (ID: " + empleado.getId() + ")");
-        return true;
+        return retorno;
     }
 
     private void nuevoEmpleado() {
         System.out.println("===================================");
         System.out.println("|        Registro de Empleado     |");
         System.out.println("===================================");
-        System.out.print("ID: ");
-        int id = scanner.nextInt();
+        // System.out.print("ID: ");
+        // int id = scanner.nextInt();
         scanner.nextLine();
         System.out.print("Nombre: ");
         String nombre = scanner.nextLine();
         System.out.print("Posición: ");
         String posicion = scanner.nextLine();
 
-        empleado = new Empleado(id, nombre, posicion);
+        empleado = new Empleado(nombre, posicion);// empleado = new Empleado(id, nombre, posicion);
         sistemaLogistica.registrarEmpleado(empleado);
 
         System.out.println("Registro exitoso. Bienvenido, " + empleado.getNombre() + " (ID: " + empleado.getId() + ")");
+    }
+
+    // recursivo
+    public int opcionAccesoSeleccionado(){
+        System.out.println("===================================");
+        System.out.println("|       Acceso de Empleado        |");
+        System.out.println("===================================");
+        System.out.println("| 1. Empleado registrado          |");
+        System.out.println("| 2. Nuevo empleado               |");
+        System.out.println("| 3. Volver al Menu Principal     |");
+        System.out.println("===================================");
+        System.out.print("Seleccione una opción: ");
+        int opcion;
+        try{
+            opcion = scanner.nextInt();
+            if (opcion < 1 || opcion > 3) {
+                System.out.println("❌ Opción inválida. Por favor, ingrese una opción válida. ❌");
+                opcion = opcionAccesoSeleccionado();
+            }
+
+        }catch (InputMismatchException e){
+            System.out.println("❌ Por favor, ingrese un número entero. ❌");
+            scanner.next();
+            opcion = opcionAccesoSeleccionado();
+        }
+        return opcion;
+    }
+
+    // recursivo
+    public int opcionMenuEmpSeleccionado(){
+        System.out.println("===================================");
+        System.out.println("|           Menú Empleado         |");
+        System.out.println("===================================");
+        System.out.println("| 1. Consultar stock de productos |");
+        System.out.println("| 2. Ingresar productos a stock   |");
+        System.out.println("| 3. Retirar productos de stock   |");
+        System.out.println("| 4. Consultar pedidos            |");
+        System.out.println("| 5. Regresar al menú principal   |");
+        System.out.println("===================================");
+        System.out.print("Seleccione una opción: ");
+        int opcion;
+        try{
+            opcion = scanner.nextInt();
+            if (opcion < 1 || opcion > 5) {
+                System.out.println("❌ Opción inválida. Por favor, ingrese una opción válida. ❌");
+                opcion = opcionMenuEmpSeleccionado();
+            }
+
+        }catch (InputMismatchException e){
+            System.out.println("❌ Por favor, ingrese un número entero. ❌");
+            scanner.next();
+            opcion = opcionMenuEmpSeleccionado();
+        }
+        return opcion;
     }
 }

@@ -53,36 +53,41 @@ public class Pedido {
     }
 
     public void generarReportePedido() {
-        System.out.println("===================================");
-        System.out.println("Reporte del Pedido " + codigo);
-        System.out.println("Cliente: " + cliente.getNombre() + " " + cliente.getApellido());
-        System.out.println("Fecha: " + fecha);
-        System.out.println("Estado: " + estado);
-        System.out.println("Tipo de Entrega: " + tipoEntrega);
-        System.out.println("Productos:");
+        try{
+            System.out.println("===================================");
+            System.out.println("Reporte del Pedido " + codigo);
+            System.out.println("Cliente: " + cliente.getNombre() + " " + cliente.getApellido());
+            System.out.println("Fecha: " + fecha);
+            System.out.println("Estado: " + estado);
+            System.out.println("Tipo de Entrega: " + tipoEntrega);
+            System.out.println("Productos:");
 
-        Map<String, Integer> productoCantidad = new HashMap<>();
-        Map<String, Double> productoPrecio = new HashMap<>();
+            Map<String, Integer> productoCantidad = new HashMap<>();
+            Map<String, Double> productoPrecio = new HashMap<>();
 
-        for (Producto producto : productos) {
-            String nombre = producto.getNombre();
-            if (productoCantidad.containsKey(nombre)) {
-                productoCantidad.put(nombre, productoCantidad.get(nombre) + 1);
-            } else {
-                productoCantidad.put(nombre, 1);
-                productoPrecio.put(nombre, producto.getPrecioBase());
+            for (Producto producto : productos) {
+                String nombre = producto.getNombre();
+                if (productoCantidad.containsKey(nombre)) {
+                    productoCantidad.put(nombre, productoCantidad.get(nombre) + 1);
+                } else {
+                    productoCantidad.put(nombre, 1);
+                    productoPrecio.put(nombre, producto.getPrecioBase());
+                }
             }
+
+            for (Map.Entry<String, Integer> entry : productoCantidad.entrySet()) {
+                String nombre = entry.getKey();
+                int cantidad = entry.getValue();
+                double precio = productoPrecio.get(nombre);
+                System.out.println("- " + nombre + " - Precio Unitario: " + precio + " - Cantidad: " + cantidad);
+            }
+
+            System.out.println("Importe Total sin Descuento: " + calcularImporteTotal());
+            System.out.println("Importe Total con Descuento: " + calcularImporteConDescuento());
+            System.out.println("===================================");
+        }catch (Exception e){
+            System.out.println("Ocurrio un error al generar el reporte" + e.getMessage());
         }
 
-        for (Map.Entry<String, Integer> entry : productoCantidad.entrySet()) {
-            String nombre = entry.getKey();
-            int cantidad = entry.getValue();
-            double precio = productoPrecio.get(nombre);
-            System.out.println("- " + nombre + " - Precio Unitario: " + precio + " - Cantidad: " + cantidad);
-        }
-
-        System.out.println("Importe Total sin Descuento: " + calcularImporteTotal());
-        System.out.println("Importe Total con Descuento: " + calcularImporteConDescuento());
-        System.out.println("===================================");
     }
 }

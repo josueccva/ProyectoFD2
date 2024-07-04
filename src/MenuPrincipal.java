@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MenuPrincipal {
@@ -13,15 +14,7 @@ public class MenuPrincipal {
         int opcion;
 
         do {
-            System.out.println("===================================");
-            System.out.println("|           Menú Principal        |");
-            System.out.println("===================================");
-            System.out.println("| 1. Menú Cliente                 |");
-            System.out.println("| 2. Menú Empleado                |");
-            System.out.println("| 3. Salir                        |");
-            System.out.println("===================================");
-            System.out.print("Seleccione una opción: ");
-            opcion = scanner.nextInt();
+            opcion = opcionMenuSeleccionada();
 
             switch (opcion) {
                 case 1:
@@ -39,5 +32,31 @@ public class MenuPrincipal {
                     System.out.println("Opción no válida");
             }
         } while (opcion != 3);
+    }
+
+    // recursivo
+    public int opcionMenuSeleccionada(){
+        System.out.println("===================================");
+        System.out.println("|           Menú Principal        |");
+        System.out.println("===================================");
+        System.out.println("| 1. Menú Cliente                 |");
+        System.out.println("| 2. Menú Empleado                |");
+        System.out.println("| 3. Salir                        |");
+        System.out.println("===================================");
+        System.out.print("Seleccione una opción: ");
+        int opcion;
+        try{
+            opcion = scanner.nextInt();
+            if (opcion < 1 || opcion > 3) {
+                System.out.println("❌ Opción inválida. Por favor, ingrese una opción válida. ❌");
+                opcion = opcionMenuSeleccionada(); // Llamada recursiva si la opción no es válida
+            }
+
+        }catch (InputMismatchException e){
+            System.out.println("❌ Por favor, ingrese un número entero. ❌");
+            scanner.next();
+            opcion = opcionMenuSeleccionada();
+        }
+        return opcion;
     }
 }

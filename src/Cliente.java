@@ -1,5 +1,6 @@
 // Archivo: src/Cliente.java
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,28 +39,48 @@ public class Cliente {
     }
 
     public void elegirProductos(SistemaLogistica sistemaLogistica, Carrito carrito) {
-        Scanner scanner = new Scanner(System.in);
-        int codigoProducto, cantidad;
-        System.out.print("Ingrese el código del producto que desea agregar al carrito: ");
-        codigoProducto = scanner.nextInt();
-        Producto productoElegido = sistemaLogistica.obtenerProductoPorCodigo(codigoProducto);
+        try{
+            // Scanner scanner = new Scanner(System.in);
+            int codigoProducto, cantidad;
+            // System.out.print("Ingrese el código del producto que desea agregar al carrito: ");
+            codigoProducto = soloNumero("Ingrese el código del producto que desea agregar al carrito: ", "El código debe ser un número entero");// scanner.nextInt();
+            Producto productoElegido = sistemaLogistica.obtenerProductoPorCodigo(codigoProducto);
 
-        if (productoElegido != null && productoElegido.getStock() > 0) {
-            System.out.print("Ingrese la cantidad que desea agregar al carrito: ");
-            cantidad = scanner.nextInt();
+            if (productoElegido != null && productoElegido.getStock() > 0) {
+                // System.out.print("Ingrese la cantidad que desea agregar al carrito: ");
+                cantidad = soloNumero("Ingrese la cantidad que desea agregar al carrito: ", "La cantidad debe ser un número entero."); // scanner.nextInt();
 
-            if (cantidad > 0 && cantidad <= productoElegido.getStock()) {
-                for (int i = 0; i < cantidad; i++) {
-                    carrito.agregarCarrito(productoElegido);
+                if (cantidad > 0 && cantidad <= productoElegido.getStock()) {
+                    for (int i = 0; i < cantidad; i++) {
+                        carrito.agregarCarrito(productoElegido);
+                    }
+                    productoElegido.reducirStock(cantidad);
+                    System.out.println("Producto(s) agregado(s) al carrito: " + productoElegido.getNombre() + " - Cantidad: " + cantidad);
+                } else {
+                    System.out.println("Cantidad no válida o fuera de stock.");
                 }
-                productoElegido.reducirStock(cantidad);
-                System.out.println("Producto(s) agregado(s) al carrito: " + productoElegido.getNombre() + " - Cantidad: " + cantidad);
             } else {
-                System.out.println("Cantidad no válida o fuera de stock.");
+                System.out.println("Producto no disponible o sin stock.");
             }
-        } else {
-            System.out.println("Producto no disponible o sin stock.");
+        }catch (Exception e){
+            System.out.println("Ocurrio un error al elegir producto: " + e.getMessage());
         }
+    }
+
+    public int soloNumero(String mensaje, String errMensaje){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print(mensaje);
+        int opcion;
+        try{
+            opcion = scanner.nextInt();
+        }catch (InputMismatchException e){
+            System.out.println(errMensaje);
+            scanner.next();
+            // scanner.close();
+            opcion = soloNumero(mensaje, errMensaje);
+        }
+        // scanner.close();
+        return opcion;
     }
 
     public void validarCompra(SistemaLogistica sistemaLogistica, Carrito carrito) {
@@ -101,14 +122,18 @@ public class Cliente {
     }
 
     public void cancelarPedido(SistemaLogistica sistemaLogistica) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Ingrese el código de su pedido: ");
-        int codigoPedido = scanner.nextInt();
-        boolean resultado = sistemaLogistica.cancelarPedido(codigoPedido);
-        if (resultado) {
-            System.out.println("Pedido cancelado con éxito.");
-        } else {
-            System.out.println("No se pudo cancelar el pedido. Verifique el código e intente nuevamente.");
+        // Scanner scanner = new Scanner(System.in);
+        try {
+            int codigoPedido = soloNumero("📑 Ingrese el código de su pedido: ", "❌ El código debe ser un entero ❌");
+            boolean resultado = sistemaLogistica.cancelarPedido(codigoPedido);
+            if (resultado) {
+                System.out.println("Pedido cancelado con éxito.");
+            } else {
+                System.out.println("No se pudo cancelar el pedido. Verifique el código e intente nuevamente.");
+            }
+        }catch (Exception e){
+            System.out.println("⚠ Hubo un error al cancelar el pedido: " + e.getMessage());
         }
+
     }
 }

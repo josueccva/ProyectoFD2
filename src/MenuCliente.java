@@ -1,4 +1,5 @@
 // Archivo: src/MenuCliente.java
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.List;
 
@@ -14,15 +15,7 @@ public class MenuCliente {
 
     public void mostrarMenu() {
         int opcion;
-
-        System.out.println("===================================");
-        System.out.println("|       Acceso de Cliente         |");
-        System.out.println("===================================");
-        System.out.println("| 1. Cliente registrado           |");
-        System.out.println("| 2. Nuevo cliente                |");
-        System.out.println("===================================");
-        System.out.print("Seleccione una opción: ");
-        opcion = scanner.nextInt();
+        opcion = opcionAccesoSeleccionado();
 
         switch (opcion) {
             case 1:
@@ -42,20 +35,7 @@ public class MenuCliente {
         Carrito carrito = new Carrito();
 
         do {
-            System.out.println("===================================");
-            System.out.println("|           Menú Cliente          |");
-            System.out.println("===================================");
-            System.out.println("| 1. Consultar stock de productos |");
-            System.out.println("| 2. Elegir productos             |");
-            System.out.println("| 3. Validar y proceder con la    |");
-            System.out.println("|    compra                       |");
-            System.out.println("| 4. Consultar estado del pedido  |");
-            System.out.println("| 5. Cancelar pedido              |");
-            System.out.println("| 6. Regresar al menú principal   |");
-            System.out.println("===================================");
-            System.out.print("Seleccione una opción: ");
-            opcionMenu = scanner.nextInt();
-
+            opcionMenu = opcionMenuClienteSeleccionada();
             switch (opcionMenu) {
                 case 1:
                     cliente.consultarStock(sistemaLogistica);
@@ -89,6 +69,62 @@ public class MenuCliente {
                 scanner.nextLine();  // Espera por enter
             }
         } while (opcionMenu != 6);
+    }
+
+    // recursivo
+    public int opcionAccesoSeleccionado(){
+        System.out.println("===================================");
+        System.out.println("|       Acceso de Cliente         |");
+        System.out.println("===================================");
+        System.out.println("| 1. Cliente registrado           |");
+        System.out.println("| 2. Nuevo cliente                |");
+        System.out.println("| 3. Volver al Menu Principal     |");
+        System.out.println("===================================");
+        System.out.print("Seleccione una opción: ");
+        int opcion;
+        try{
+            opcion = scanner.nextInt();
+            if (opcion < 1 || opcion > 3) {
+                System.out.println("❌ Opción inválida. Por favor, ingrese una opción válida. ❌");
+                opcion = opcionAccesoSeleccionado();
+            }
+
+        }catch (InputMismatchException e){
+            System.out.println("❌ Por favor, ingrese un número entero. ❌");
+            scanner.next();
+            opcion = opcionAccesoSeleccionado();
+        }
+        return opcion;
+    }
+
+    // recursivo
+    public int opcionMenuClienteSeleccionada(){
+        System.out.println("===================================");
+        System.out.println("|           Menú Cliente          |");
+        System.out.println("===================================");
+        System.out.println("| 1. Consultar stock de productos |");
+        System.out.println("| 2. Elegir productos             |");
+        System.out.println("| 3. Validar y proceder con la    |");
+        System.out.println("|    compra                       |");
+        System.out.println("| 4. Consultar estado del pedido  |");
+        System.out.println("| 5. Cancelar pedido              |");
+        System.out.println("| 6. Regresar al menú principal   |");
+        System.out.println("===================================");
+        System.out.print("Seleccione una opción: ");
+        int opcion;
+        try{
+            opcion = scanner.nextInt();
+            if (opcion < 1 || opcion > 6) {
+                System.out.println("❌ Opción inválida. Por favor, ingrese una opción válida. ❌");
+                opcion = opcionMenuClienteSeleccionada();
+            }
+
+        }catch (InputMismatchException e){
+            System.out.println("❌ Por favor, ingrese un número entero. ❌");
+            scanner.next();
+            opcion = opcionMenuClienteSeleccionada();
+        }
+        return opcion;
     }
 
     private boolean clienteRegistrado() {
@@ -133,14 +169,16 @@ public class MenuCliente {
 
         if (pedidosCliente.isEmpty()) {
             System.out.println("No hay pedidos registrados aún. Regresando al menú anterior...");
-            System.out.println("Presione enter para regresar al menú.");
-            scanner.nextLine();  // Pausa
-            scanner.nextLine();  // Espera por enter
+            // System.out.println("Presione enter para regresar al menú.");
+            // scanner.nextLine();  // Pausa
+            // scanner.nextLine();  // Espera por enter
             return;
+        }else{
+            for (Pedido pedido : pedidosCliente) {
+                System.out.println("Pedido " + pedido.getCodigo() + " - Estado: " + pedido.getEstado() + " - Tipo de Entrega: " + pedido.getTipoEntrega());
+            }
         }
 
-        for (Pedido pedido : pedidosCliente) {
-            System.out.println("Pedido " + pedido.getCodigo() + " - Estado: " + pedido.getEstado() + " - Tipo de Entrega: " + pedido.getTipoEntrega());
-        }
+
     }
 }
