@@ -7,6 +7,8 @@ public class MenuEmpleado {
     private Empleado empleado;
     private Scanner scanner;
 
+    private Producto producto;
+
     public MenuEmpleado(SistemaLogistica sistemaLogistica, Scanner scanner) {
         this.sistemaLogistica = sistemaLogistica;
         this.scanner = scanner;
@@ -61,18 +63,31 @@ public class MenuEmpleado {
                     empleado.consultarPedidos(sistemaLogistica);
                     break;
                 case 5:
+                    sistemaLogistica.listarTodosProductos();
+                    break;
+                case 6:
+                    // sistemaLogistica.registrarProducto(producto);
+                    empleado.registrarProducto(sistemaLogistica);
+                    break;
+                case 7:
                     System.out.println("Regresando al menú principal...");
                     break;
                 default:
                     System.out.println("Opción no válida");
             }
 
-            if (opcionMenu != 5) {
+            if (opcionMenu != 7) {
                 System.out.println("Presione enter para regresar al menú.");
                 scanner.nextLine();
                 scanner.nextLine();
             }
-        } while (opcionMenu != 5);
+        } while (opcionMenu != 7);
+    }
+
+    public void registrarProducto(Scanner scanner){
+        System.out.println("¿Qué tipo de producto desea registrar?");
+        System.out.println("1. Proteina \n2. Vitamina");
+        int tipoProducto = scanner.nextInt();
     }
 
     public int soloNumero(String mensaje, String errMensaje){
@@ -80,6 +95,7 @@ public class MenuEmpleado {
         int opcion;
         try{
             opcion = scanner.nextInt();
+            if (opcion <= 0) opcion = soloNumero(mensaje, errMensaje);
         }catch (InputMismatchException e){
             System.out.println(errMensaje);
             scanner.next();
@@ -165,13 +181,15 @@ public class MenuEmpleado {
         System.out.println("| 2. Ingresar productos a stock   |");
         System.out.println("| 3. Retirar productos de stock   |");
         System.out.println("| 4. Consultar pedidos            |");
-        System.out.println("| 5. Regresar al menú principal   |");
+        System.out.println("| 5. Listar todos los productos   |");
+        System.out.println("| 6. Registrar producto           |");
+        System.out.println("| 7. Regresar al menú principal   |");
         System.out.println("===================================");
         System.out.print("Seleccione una opción: ");
         int opcion;
         try{
             opcion = scanner.nextInt();
-            if (opcion < 1 || opcion > 5) {
+            if (opcion < 1 || opcion > 7) {
                 System.out.println("❌ Opción inválida. Por favor, ingrese una opción válida. ❌");
                 opcion = opcionMenuEmpSeleccionado();
             }

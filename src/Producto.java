@@ -1,4 +1,4 @@
-public class Producto {
+public abstract class Producto {
     private int codigo;
     private String nombre;
     private String descripcion;
@@ -25,6 +25,26 @@ public class Producto {
     public void añadirStock(int cantidad) { this.stock += cantidad; }
     public void reducirStock(int cantidad) { this.stock -= cantidad; }
 
+    public abstract String getCategoria();
+    public abstract double calcularPrecio();
+
     public static void consultarStockProductos() {
+    }
+
+    public int obtenerSiguienteCodigo(){
+        int nextCodigo = getCodigo() + 1;
+        System.out.println("cod actual: " + nextCodigo);
+        return nextCodigo;
+    }
+
+    @Override
+    public String toString() {
+        return "codigo=" + codigo +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", Precio Base=" + precioBase +
+                ", oferta=" + oferta +
+                ", Precio=" + calcularPrecio() +
+                ", stock=" + stock;
     }
 }

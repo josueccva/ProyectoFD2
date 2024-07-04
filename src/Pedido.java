@@ -34,7 +34,7 @@ public class Pedido {
     public double calcularImporteTotal() {
         double total = 0;
         for (Producto producto : productos) {
-            total += producto.getPrecioBase();
+            total += producto.calcularPrecio();
         }
         return total;
     }
@@ -71,7 +71,7 @@ public class Pedido {
                     productoCantidad.put(nombre, productoCantidad.get(nombre) + 1);
                 } else {
                     productoCantidad.put(nombre, 1);
-                    productoPrecio.put(nombre, producto.getPrecioBase());
+                    productoPrecio.put(nombre, producto.calcularPrecio());
                 }
             }
 

@@ -24,7 +24,7 @@ public class Carrito {
     public double calcularImporteTotal() {
         double total = 0;
         for (Producto producto : productos) {
-            total += producto.getPrecioBase();
+            total += producto.calcularPrecio();
         }
         return total;
     }

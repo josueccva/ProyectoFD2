@@ -85,4 +85,21 @@ public class SistemaLogistica {
         }
         return pedidosCliente;
     }
+
+    // -----------------
+    public void listarTodosProductos() {
+        System.out.println("Listado de Todos los Productos");
+        int contador = 1;
+        for (Producto producto : listaProductos) {
+            System.out.println(contador + ". " + producto);
+            contador++;
+        }
+    }
+
+    public int obtenerSiguienteCodigoProducto(){
+        return listaProductos.getLast().obtenerSiguienteCodigo();
+    }
+
+
+
 }
