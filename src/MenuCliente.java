@@ -184,7 +184,5 @@ public class MenuCliente {
                 System.out.println("Pedido " + pedido.getCodigo() + " - Estado: " + pedido.getEstado() + " - Tipo de Entrega: " + pedido.getTipoEntrega());
             }
         }
-
-
     }
 }

@@ -21,15 +21,8 @@ public class Cliente {
 
     public String getNombre() { return nombre; }
     public String getApellido() { return apellido; }
-    public String getDireccion() { return direccion; }
     public String getCorreo() { return correo; }
-    public String getTelefono() { return telefono; }
 
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setApellido(String apellido) { this.apellido = apellido; }
-    public void setDireccion(String direccion) { this.direccion = direccion; }
-    public void setCorreo(String correo) { this.correo = correo; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
 
     public void consultarStock(SistemaLogistica sistemaLogistica) {
         System.out.println("Stock de productos disponibles:");
@@ -67,6 +60,7 @@ public class Cliente {
         }
     }
 
+    // recursivo
     public int soloNumero(String mensaje, String errMensaje){
         Scanner scanner = new Scanner(System.in);
         System.out.print(mensaje);

@@ -35,11 +35,6 @@ public class Empleado {
 
     public int getId() { return id; }
     public String getNombre() { return nombre; }
-    public String getPosicion() { return posicion; }
-
-    public void setId(int id) { this.id = id; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setPosicion(String posicion) { this.posicion = posicion; }
 
     public void registrarProducto(SistemaLogistica sistemaLogistica) {
         try{
@@ -137,6 +132,7 @@ public class Empleado {
         }
     }
 
+    // recursivo
     public int soloNumero(String mensaje, String errMensaje){
         Scanner scanner = new Scanner(System.in);
         System.out.println(mensaje);
@@ -152,6 +148,7 @@ public class Empleado {
         return opcion;
     }
 
+    // recursivo
     public double soloNumeroDecimal(String mensaje, String errMensaje){
         Scanner scanner = new Scanner(System.in);
         System.out.println(mensaje);

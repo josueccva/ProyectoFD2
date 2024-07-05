@@ -23,8 +23,6 @@ public class Pedido {
 
     public int getCodigo() { return codigo; }
     public Cliente getCliente() { return cliente; }
-    public List<Producto> getProductos() { return productos; }
-    public Date getFecha() { return fecha; }
     public String getEstado() { return estado; }
     public String getTipoEntrega() { return tipoEntrega; }
 

@@ -17,7 +17,6 @@ public abstract class Producto {
 
     public int getCodigo() { return codigo; }
     public String getNombre() { return nombre; }
-    public String getDescripcion() { return descripcion; }
     public double getPrecioBase() { return precioBase; }
     public boolean isOferta() { return oferta; }
     public int getStock() { return stock; }
