@@ -27,7 +27,7 @@ public class Cliente {
     public void consultarStock(SistemaLogistica sistemaLogistica) {
         System.out.println("Stock de productos disponibles:");
         for (Producto producto : sistemaLogistica.consultarStock()) {
-            System.out.println("Categoria: "+ producto.getCategoria() + " - Producto: " + producto.getNombre() + " - Stock: " + producto.getStock() + " - Precio B.:" + producto.getPrecioBase() + " - Oferta: " + producto.isOferta() + " - Precio: " + producto.calcularPrecio());
+            System.out.println("Categoria: "+ producto.getCategoria() + " - Producto: " + producto.getNombre() + " - Stock: " + producto.getStock() + " - Precio B.:" + producto.getPrecioBase() + " - Oferta: " + producto.textoOferta() + " - Precio: " + producto.calcularPrecio());
         }
     }
 

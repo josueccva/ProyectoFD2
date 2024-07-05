@@ -36,13 +36,17 @@ public abstract class Producto {
         return nextCodigo;
     }
 
+    public String textoOferta(){
+        return (isOferta())? "En Oferta" : "Sin Oferta";
+    }
+
     @Override
     public String toString() {
         return "codigo=" + codigo +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", Precio Base=" + precioBase +
-                ", oferta=" + oferta +
+                ", oferta=" + textoOferta() +
                 ", Precio=" + calcularPrecio() +
                 ", stock=" + stock;
     }
